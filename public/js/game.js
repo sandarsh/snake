@@ -1,11 +1,17 @@
 'use strict';
-
 let s;
-let slider;
 let isPaused;
-let food = function(){
-	this.x = random(10, 590);
-	this.y = random(10, 590);
+let food = function(width, height){
+	this.x = random(width);
+	this.y = random(height);
+	while(true){
+		if(this.x > 590 || this.x < 10 || this.y > 590 || this.y < 0){
+			this.x = random(width);
+			this.y = random(height);
+		} else {
+			break
+		}
+	}
 	this.draw = function(){
 		fill(175);
 		rect(this.x, this.y, 10,10);
@@ -15,19 +21,16 @@ let food = function(){
 let f;
 
 function setup(){
+	frameRate(10);
 	createCanvas(600, 600);
-	slider = createSlider(0, 255, 30);
 	isPaused = true;
-	s = new snake(slider.value());
-	f = new food();
+	s = new snake();
+	f = new food(width, height);
 }
 
 function keyPressed(){
 	if(keyCode === ENTER){
 		isPaused = !isPaused;
-		return;
-	}
-	if(isPaused){
 		return;
 	}
 	if(s.direction === 'right' || s.direction === 'left'){
@@ -36,12 +39,12 @@ function keyPressed(){
 		} else {
 			if(keyCode === UP_ARROW){
 				s.xSpeed = 0;
-				s.ySpeed = -1 * slider.value();
+				s.ySpeed = -10;
 				s.direction = 'up';
 			}
 			if(keyCode === DOWN_ARROW){
 				s.xSpeed = 0;
-				s.ySpeed = slider.value();
+				s.ySpeed = 10;
 				s.direction = 'down';
 			}
 		}
@@ -51,12 +54,12 @@ function keyPressed(){
 
 		} else {
 			if(keyCode === LEFT_ARROW){
-				s.xSpeed = -1 * slider.value();
+				s.xSpeed = -10;
 				s.ySpeed = 0;
 				s.direction = 'left';
 			}
 			if(keyCode === RIGHT_ARROW){
-				s.xSpeed = slider.value();
+				s.xSpeed = 10;
 				s.ySpeed = 0;
 				s.direction = 'right';
 			}
@@ -69,11 +72,11 @@ function draw(){
 	if(s.checkCollision()){
 		isPaused = true;
 	}
-	s.update(slider.value(), isPaused);
+	s.update(isPaused);
 	s.draw();
 	f.draw();
 	if(s.foodEaten(f.x, f.y)) {
-		f.x = random(10, 590);
-		f.y = random(10, 590);
+		f.x = random(width);
+		f.y = random(height);
 	}
 }
