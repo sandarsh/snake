@@ -2,16 +2,17 @@
 let s;
 let isPaused;
 let food = function(width, height){
-	this.x = random(width);
-	this.y = random(height);
+	this.x = Math.round(random(width)/10) * 10;
+	this.y = Math.round(random(height)/10) * 10;
 	while(true){
-		if(this.x > 590 || this.x < 10 || this.y > 590 || this.y < 0){
-			this.x = random(width);
-			this.y = random(height);
+		if(this.x > 590 || this.x < 0 || this.y > 590 || this.y < 0){
+			this.x = Math.round(random(width)/10) * 10;
+			this.y = Math.round(random(height)/10) * 10;
 		} else {
 			break
 		}
 	}
+	console.log("Food position ", this.x, this.y);
 	this.draw = function(){
 		fill(175);
 		rect(this.x, this.y, 10,10);
@@ -22,10 +23,10 @@ let f;
 
 function setup(){
 	frameRate(10);
-	createCanvas(600, 600);
+	createCanvas(601, 601);
 	isPaused = true;
 	s = new snake();
-	f = new food(width, height);
+	f = new food(590, 590);
 }
 
 function keyPressed(){
@@ -68,15 +69,17 @@ function keyPressed(){
 }
 
 function draw(){
-	background(53);
+	background(30);
+	s.update(isPaused);
 	if(s.checkCollision()){
 		isPaused = true;
+		s.direction = 'right';
 	}
-	s.update(isPaused);
 	s.draw();
 	f.draw();
 	if(s.foodEaten(f.x, f.y)) {
-		f.x = random(width);
-		f.y = random(height);
+		f.x = Math.round(random(590)/10) * 10;
+		f.y = Math.round(random(590)/10) * 10;
+		console.log("Food position ", f.x, f.y);
 	}
 }
