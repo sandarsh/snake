@@ -59,7 +59,6 @@ function snake(){
 		if(Math.abs(this.x - foodx) <= 5 && Math.abs(this.y - foody) <= 5){
 			let temp = new snakeTail(this.x, this.y);
 			this.arr.unshift(temp);
-			console.log(this.arr);
 			return true;
 		}
 	};

@@ -5,14 +5,13 @@ let food = function(width, height){
 	this.x = Math.round(random(width)/10) * 10;
 	this.y = Math.round(random(height)/10) * 10;
 	while(true){
-		if(this.x > 590 || this.x < 0 || this.y > 590 || this.y < 0){
+		if(this.x > 590 || this.x < 0 || this.y > 590 || this.y < 0 || notOnSnake(this.x, this.y)){
 			this.x = Math.round(random(width)/10) * 10;
 			this.y = Math.round(random(height)/10) * 10;
 		} else {
 			break
 		}
 	}
-	console.log("Food position ", this.x, this.y);
 	this.draw = function(){
 		fill(175);
 		rect(this.x, this.y, 10,10);
@@ -21,13 +20,28 @@ let food = function(width, height){
 
 let f;
 
+
 function setup(){
-	frameRate(10);
+	frameRate(18);
 	createCanvas(601, 601);
 	isPaused = true;
 	s = new snake();
 	f = new food(590, 590);
 }
+
+function notOnSnake(fx,fy){
+	if(s.x === fx && s.y ===fy){
+		return true;
+	} else {
+		for(let i in s.arr){
+			if (arr[i].x === fx && arr[i].y === fy){
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
 
 function keyPressed(){
 	if(keyCode === ENTER){
@@ -80,6 +94,5 @@ function draw(){
 	if(s.foodEaten(f.x, f.y)) {
 		f.x = Math.round(random(590)/10) * 10;
 		f.y = Math.round(random(590)/10) * 10;
-		console.log("Food position ", f.x, f.y);
 	}
 }
