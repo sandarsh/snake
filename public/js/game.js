@@ -13,7 +13,7 @@ let food = function(width, height){
 		}
 	}
 	this.draw = function(){
-		fill(175);
+		fill("grey");
 		rect(this.x, this.y, 10,10);
 	}
 };
